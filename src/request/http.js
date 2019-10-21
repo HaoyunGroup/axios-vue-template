@@ -3,12 +3,12 @@
  * qs 用来序列化 post 类型数据
  * 引入自己的路由配置
  */
-import axios from 'axios';
-import QS from 'qs';
-import router from '../router';
-import store from '../store';
-import { Toast } from 'vant';
-import baseUrl from './baseUrl';
+import axios from "axios";
+import QS from "qs";
+import router from "../router";
+import store from "../store";
+import { Toast } from "vant";
+import baseUrl from "./baseUrl";
 
 /**
  * loading动画。。。。
@@ -19,7 +19,7 @@ let loading;
 const startLoading = () => {
   loading = Toast.loading({
     mask: true,
-    message: '加载中...',
+    message: "加载中..."
   });
 };
 const endLoading = () => {
@@ -35,7 +35,7 @@ const tip = msg => {
   Toast({
     message: msg,
     duration: 1000,
-    forbidClick: true,
+    forbidClick: true
   });
 };
 
@@ -46,10 +46,10 @@ const tip = msg => {
  */
 const toLogin = () => {
   router.replace({
-    path: '/login',
+    path: "/login",
     query: {
-      redirect: router.currentRoute.fullPath,
-    },
+      redirect: router.currentRoute.fullPath
+    }
   });
 };
 
@@ -64,13 +64,13 @@ const errorHandle = (status, other) => {
       toLogin();
       break;
     case 403:
-      tip('登录过期，请重新登录');
-      localStorage.removeItem('token');
-      store.commit('loginSuccess', null);
+      tip("登录过期，请重新登录");
+      localStorage.removeItem("token");
+      store.commit("loginSuccess", null);
       toLogin();
       break;
     case 404:
-      tip('请求资源不存在');
+      tip("请求资源不存在");
       break;
     default:
       tip(other);
@@ -124,7 +124,7 @@ instance.interceptors.response.use(
       // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
       // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
       if (!window.navigator.onLine) {
-        store.commit('changeNetwork', false);
+        store.commit("changeNetwork", false);
       } else {
         return Promise.reject(error);
       }
@@ -147,21 +147,21 @@ const request = async options => {
  * @param {Object}} params 附带的参数
  */
 const get = (requestUrl, params = {}) => {
-  let url = '';
+  let url = "";
   if (params) {
     url = `${requestUrl}?${QS.stringify(params)}&timeStamp${new Date().getTime()}`;
   }
-  const headers = { 'Content-Type': 'application/x-www-rorm-urlencoded' };
+  const headers = { "Content-Type": "application/x-www-rorm-urlencoded" };
   return request({
     url,
-    method: 'GET',
-    headers,
+    method: "GET",
+    headers
   });
 };
 
 const post = (requestUrl, params) => {
   let data = null;
-  let headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+  let headers = { "Content-Type": "application/x-www-form-urlencoded" };
   if (params.formData) {
     data = params.formData;
   } else {
@@ -169,9 +169,9 @@ const post = (requestUrl, params) => {
   }
   return request({
     url: requestUrl,
-    method: 'POST',
+    method: "POST",
     headers,
-    data,
+    data
   });
 };
 export { get, post };
